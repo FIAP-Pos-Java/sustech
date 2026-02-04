@@ -20,7 +20,7 @@ public class Login {
     private String userName;
     private String password;
 
-//    @OneToOne
-//    @JoinColumn(name = "usuario_id")
-//    private Usuario usuario;
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 }

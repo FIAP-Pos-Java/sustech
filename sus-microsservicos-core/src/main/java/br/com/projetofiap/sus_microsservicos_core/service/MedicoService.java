@@ -45,9 +45,6 @@ public class MedicoService {
         UUID uuid = UUID.fromString(id);
         Medico buscandoMedico = this.medicoRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("usuario não existe"));
 
-        System.out.println(uuid);
-        System.out.println(buscandoMedico.getId());
-
         Medico atualizandoMedico = this.medicoMapper.toEntity(dto);
         atualizandoMedico.setId(buscandoMedico.getId());
         this.medicoRepository.save(atualizandoMedico);

@@ -3,6 +3,7 @@ package br.com.projetofiap.sus_microsservicos_core.controller;
 import br.com.projetofiap.sus_microsservicos_core.controller.dto.BuscarMedicoDTO;
 import br.com.projetofiap.sus_microsservicos_core.controller.dto.MedicoDTO;
 import br.com.projetofiap.sus_microsservicos_core.service.MedicoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class MedicoController {
     public ResponseEntity<Page<BuscarMedicoDTO>> buscarTodosMedicos(
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size
-    ){
+    ) {
         this.logger.info("GET -> /api/v1/medicos?page={}&size={}", page, size);
         Page<BuscarMedicoDTO> medicosDTO = this.medicoService.buscarTodosMedicos(page, size);
         return new ResponseEntity(medicosDTO.getContent(), HttpStatus.OK);
@@ -42,8 +43,8 @@ public class MedicoController {
 
     @PostMapping
     public ResponseEntity<Void> cadastrarMedico(
-            @RequestBody MedicoDTO dto
-    ){
+            @Valid @RequestBody MedicoDTO dto
+    ) {
         this.logger.info("POST -> /api/v1/medicos");
         this.medicoService.cadastrarMedico(dto);
         return new ResponseEntity(HttpStatus.CREATED);
@@ -52,8 +53,8 @@ public class MedicoController {
     @PutMapping("{id}")
     public ResponseEntity<Void> atualizarMedico(
             @PathVariable("id") String id,
-            @RequestBody MedicoDTO dto
-    ){
+            @Valid @RequestBody MedicoDTO dto
+    ) {
         this.logger.info("PUT -> /api/v1/medicos");
         this.medicoService.atualizarMedico(id, dto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -62,7 +63,7 @@ public class MedicoController {
     @DeleteMapping("{id}")
     public ResponseEntity<Void> removerMedico(
             @PathVariable("id") String id
-    ){
+    ) {
         this.logger.info("DELETE -> /api/v1/medicos/{id}", id);
         this.medicoService.removerMedico(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

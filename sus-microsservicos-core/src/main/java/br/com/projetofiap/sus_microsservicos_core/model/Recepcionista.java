@@ -1,5 +1,6 @@
 package br.com.projetofiap.sus_microsservicos_core.model;
 
+import br.com.projetofiap.sus_microsservicos_core.model.enums.Turno;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

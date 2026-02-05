@@ -7,6 +7,7 @@ import br.com.projetofiap.sus_microsservicos_core.controller.dto.RecepcionistaDT
 import br.com.projetofiap.sus_microsservicos_core.controller.mappers.RecepcionistaMapper;
 import br.com.projetofiap.sus_microsservicos_core.model.Medico;
 import br.com.projetofiap.sus_microsservicos_core.model.Recepcionista;
+import br.com.projetofiap.sus_microsservicos_core.model.factory.UsuarioFactoryImpl;
 import br.com.projetofiap.sus_microsservicos_core.repository.RecepcionistaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class RecepcionistaService {
 
     private final RecepcionistaRepository recepcionistaRepository;
     private final RecepcionistaMapper recepcionistaMapper;
+    private final UsuarioFactoryImpl usuarioFactory;
 
     public Page<BuscarRecepcionistaDTO> buscarTodosRecepcionistas(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
@@ -39,8 +41,7 @@ public class RecepcionistaService {
 
     public void cadastrarRecepcionista(RecepcionistaDTO dto){
         // todo implementar erro se tiver mesmo crm nao pode cadastrar
-        Recepcionista novoRecepcionista = new Recepcionista();
-        novoRecepcionista = this.recepcionistaMapper.toEntity(dto);
+        Recepcionista novoRecepcionista = (Recepcionista) this.usuarioFactory.criandoUsuario(dto);
         this.recepcionistaRepository.save(novoRecepcionista);
     }
 
@@ -48,7 +49,7 @@ public class RecepcionistaService {
         UUID uuid = UUID.fromString(id);
         Recepcionista buscandoRecepcionista = this.recepcionistaRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("usuario não existe"));
 
-        Recepcionista atualizandoRecepcionista = this.recepcionistaMapper.toEntity(dto);
+        Recepcionista atualizandoRecepcionista = (Recepcionista) this.usuarioFactory.criandoUsuario(dto);
         atualizandoRecepcionista.setId(buscandoRecepcionista.getId());
         this.recepcionistaRepository.save(atualizandoRecepcionista);
     }

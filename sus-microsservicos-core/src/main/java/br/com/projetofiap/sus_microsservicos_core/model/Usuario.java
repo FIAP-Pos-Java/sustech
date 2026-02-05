@@ -1,12 +1,11 @@
 package br.com.projetofiap.sus_microsservicos_core.model;
 
+import br.com.projetofiap.sus_microsservicos_core.model.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,4 +27,6 @@ public abstract class Usuario {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
+
+    private TipoUsuario tipoUsuario;
 }

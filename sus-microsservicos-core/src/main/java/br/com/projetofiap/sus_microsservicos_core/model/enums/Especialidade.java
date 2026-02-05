@@ -1,4 +1,4 @@
-package br.com.projetofiap.sus_microsservicos_core.model;
+package br.com.projetofiap.sus_microsservicos_core.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

@@ -1,9 +1,8 @@
 package br.com.projetofiap.sus_microsservicos_core.controller.dto;
 
-import br.com.projetofiap.sus_microsservicos_core.model.Endereco;
-import br.com.projetofiap.sus_microsservicos_core.model.Especialidade;
-import br.com.projetofiap.sus_microsservicos_core.model.Login;
-import br.com.projetofiap.sus_microsservicos_core.model.Turno;
+import br.com.projetofiap.sus_microsservicos_core.model.*;
+import br.com.projetofiap.sus_microsservicos_core.model.enums.TipoUsuario;
+import br.com.projetofiap.sus_microsservicos_core.model.enums.Turno;
 
 public record RecepcionistaDTO(
         String nome,
@@ -11,6 +10,11 @@ public record RecepcionistaDTO(
         String matricula,
         Turno turno,
         Login login,
-        Endereco endereco
-) {
+        Endereco endereco,
+        TipoUsuario tipousuario
+) implements CriarUsuarioDTO {
+    @Override
+    public TipoUsuario tipoUsuario() {
+        return this.tipousuario;
+    }
 }

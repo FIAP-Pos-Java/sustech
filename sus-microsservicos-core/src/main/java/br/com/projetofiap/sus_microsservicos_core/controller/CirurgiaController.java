@@ -1,18 +1,15 @@
 package br.com.projetofiap.sus_microsservicos_core.controller;
 
-import br.com.projetofiap.sus_microsservicos_core.controller.dto.BuscarCirurgiaDTO;
 import br.com.projetofiap.sus_microsservicos_core.controller.dto.CirurgiaDTO;
 import br.com.projetofiap.sus_microsservicos_core.service.CirurgiaOrquestradorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +20,7 @@ public class CirurgiaController {
     private final Logger logger = LoggerFactory.getLogger(CirurgiaController.class);
     private final CirurgiaOrquestradorService orquestradorService;
 
+    // COMANDO: Criar cirurgia (via RabbitMQ)
     @PostMapping
     public ResponseEntity<Void> agendarCirurgia(@Valid @RequestBody CirurgiaDTO dto) {
         logger.info("POST -> /api/v1/cirurgias");
@@ -30,6 +28,7 @@ public class CirurgiaController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
+    // COMANDO: Atualizar cirurgia (via RabbitMQ)
     @PutMapping("{id}")
     public ResponseEntity<Void> atualizarCirurgia(@PathVariable String id, @Valid @RequestBody CirurgiaDTO dto) {
         logger.info("PUT -> /api/v1/cirurgias/{}", id);
@@ -38,37 +37,12 @@ public class CirurgiaController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
+    // COMANDO: Cancelar cirurgia (via RabbitMQ)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> cancelarCirurgia(@PathVariable String id) {
         logger.info("DELETE -> /api/v1/cirurgias/{}", id);
         UUID cirurgiaId = UUID.fromString(id);
         orquestradorService.cancelarCirurgia(cirurgiaId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<BuscarCirurgiaDTO>> buscarTodasCirurgias(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        logger.info("GET -> /api/v1/cirurgias?page={}&size={}", page, size);
-        Page<BuscarCirurgiaDTO> cirurgias = orquestradorService.buscarTodasCirurgias(page, size);
-        return ResponseEntity.ok(cirurgias);
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<BuscarCirurgiaDTO> buscarCirurgiaPorId(@PathVariable String id) {
-        logger.info("GET -> /api/v1/cirurgias/{}", id);
-        UUID cirurgiaId = UUID.fromString(id);
-        BuscarCirurgiaDTO cirurgia = orquestradorService.buscarCirurgiaPorId(cirurgiaId);
-        return ResponseEntity.ok(cirurgia);
-    }
-
-    @GetMapping("paciente/{pacienteId}")
-    public ResponseEntity<List<BuscarCirurgiaDTO>> buscarCirurgiasPorPaciente(@PathVariable String pacienteId) {
-        logger.info("GET -> /api/v1/cirurgias/paciente/{}", pacienteId);
-        UUID paciente = UUID.fromString(pacienteId);
-        List<BuscarCirurgiaDTO> cirurgias = orquestradorService.buscarCirurgiasPorPaciente(paciente);
-        return ResponseEntity.ok(cirurgias);
     }
 }

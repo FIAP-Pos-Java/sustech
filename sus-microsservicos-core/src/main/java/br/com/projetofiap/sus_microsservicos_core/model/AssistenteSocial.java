@@ -1,6 +1,9 @@
 package br.com.projetofiap.sus_microsservicos_core.model;
 
+import br.com.projetofiap.sus_microsservicos_core.model.enums.Turno;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_usuario_assistentesocial")
+@Table(name = "tb_usuario_assistente_social")
 public final class AssistenteSocial extends Usuario{
 
-    private String registro;
+    private String matricula;
+    private String telefoneContato;
+    
+    @Enumerated(EnumType.STRING)
+    private Turno turno;
 }

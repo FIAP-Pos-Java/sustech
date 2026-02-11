@@ -50,5 +50,9 @@ Configure o arquivo `.env` de cada microserviço baseado no arquivo `.env.exampl
 Abra o terminal no diretório `sus-microsservico-core` e execute:
 
 ```bash
-docker-compose build --no-cache
+docker compose build --no-cache
+```
+
+```bash
+docker compose up
 ```
